@@ -1,5 +1,4 @@
 
-
 let todoList = [];
 
 const displayTodos = () => {
@@ -11,25 +10,34 @@ const displayTodos = () => {
         })
     }
 };
-
 const addTodo = todoText => {
     todoList.push({'todoText': todoText, 'completed': false});
     displayTodos();
 };
-//way to change a todo
 const changeTodo = (newTodoText, position) => {
     todoList[position].todoText = newTodoText;
     displayTodos();
 };
-
-//way to delete a todo
 const deleteTodo = position => {
     todoList.splice(position, 1);
     displayTodos();
 };
-
 const toggleCompleted = position => {
     let todo = todoList[position];
     todo.completed = !todo.completed;
+    displayTodos();
+};
+const toggleAll = () => {
+    let  completedTodos = todoList.filter(todo => todo.completed === true);
+    console.log(completedTodos);
+    if (completedTodos.length === todoList.length) {
+        todoList.forEach(todo => {
+            todo.completed = false;
+        })
+    } else {
+        todoList.forEach(todo => {
+            todo.completed = true;
+        })
+    }
     displayTodos();
 };

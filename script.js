@@ -3,7 +3,13 @@
 let todoList = [];
 
 const displayTodos = () => {
-    console.log(todoList);
+    if (todoList.length === 0) {
+        console.log('no todos!');
+    } else {
+        todoList.forEach(todo => {
+            console.log(`Todo: ${todo.todoText} Completed? ${todo.completed}`);
+        })
+    }
 };
 
 const addTodo = todoText => {

@@ -7,14 +7,21 @@ const clearForm = (e) => {
 let todoList = [];
 
 const displayTodos = () => {
-    if (todoList.length === 0) {
-        console.log('no todos!');
-    } else {
-        todoList.forEach(todo => {
-            console.log(`Todo: ${todo.todoText} Completed? ${todo.completed}`);
-        })
-    }
+    todosUl.innerHTML = ' ';
+    todoList.forEach((todo, position) => {
+        const todosLi = document.createElement('li');
+        todosUl.appendChild(todosLi);
+        todosUl.appendChild(addDeleteButton());
+        todosLi.id = position;
+        todo.completed ? todosLi.textContent = `${todo.todoText} (x)` : todosLi.textContent = `${todo.todoText} ( )`
+    }, this)
 };
+const addDeleteButton = () => {
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'delete';
+    deleteButton.classList.add('delete-button');
+    return deleteButton;
+}
 const addTodo = () => {
     let todoTextInput = document.getElementById('js-add-todo-text');
     todoList.push({'todoText': todoTextInput.value, 'completed': false});
@@ -29,9 +36,8 @@ const changeTodo = () => {
     newTodoPositionInput.value = '0';
     displayTodos();
 };
-const deleteTodo = () => {
-    let todoDeletePosition = document.getElementById('js-delete-todo-position').value;
-    todoList.splice(todoDeletePosition, 1);
+const deleteTodo = (position) => {
+    todoList.splice(position, 1);
     displayTodos();
 };
 const toggleCompleted = () => {
@@ -57,21 +63,29 @@ const toggleAll = () => {
     displayTodos();
 };
 
-
-const displayTodosBtn = document.getElementById('js-display-todos');
 const toggleAllBtn = document.getElementById('js-toggle-all');
 const addTodoBtn = document.getElementById('js-add-todo');
 const changeTodoBtn = document.getElementById('js-change-todo');
 const deleteTodoBtn = document.getElementById('js-delete-todo');
 const toggleCompletedBtn = document.getElementById('js-toggle-completed');
 const forms = document.getElementsByClassName('form');
+const todosUl = document.getElementById('js-todos-ul');
 
-displayTodosBtn.addEventListener('click', displayTodos);
 toggleAllBtn.addEventListener('click', toggleAll);
 addTodoBtn.addEventListener('click', addTodo);
 changeTodoBtn.addEventListener('click', changeTodo);
 deleteTodoBtn.addEventListener('click', deleteTodo);
 toggleCompletedBtn.addEventListener('click', toggleCompleted);
+todosUl.addEventListener(('click'), function(e) {
+//get element clicked on
+    let elementClicked = event.target;
+
+   if (elementClicked.classList.contains('delete-button')) {
+       deleteTodo(parseInt(elementClicked.parentNode.id));
+   }
+
+    //check if element is delete button
+});
 
 for (let form of forms) {
     form.addEventListener('click', clearForm)
